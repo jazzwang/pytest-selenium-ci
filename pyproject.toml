@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pytest-selenium-ci"
+version = "0.1.0"
+description = "Lab for running Selenium with PyTest using Github Actions and Gitlab CI"
+authors = ["Jazz Yao-Tsung Wang <jazzwang@users.noreply.github.com>"]
+license = "APL-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.4.3"
+coverage = "^7.4.0"
+selenium = "^4.16.0"
+webdriver-manager = "^4.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
