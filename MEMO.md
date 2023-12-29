@@ -322,3 +322,143 @@ E   ModuleNotFoundError: No module named 'webdriver_manager.utils'
 @jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git commit -m "draft commit"
 @jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git push
 ```
+* ( 2023-12-29 17:02 )
+```bash
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ code conftest.py 
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git diff conftest.py
+diff --git a/conftest.py b/conftest.py
+index 2eebcff..901c18e 100644
+--- a/conftest.py
++++ b/conftest.py
+@@ -1,16 +1,14 @@
+ import pytest
++from selenium import webdriver
+ from selenium.webdriver.chrome.options import Options
+-from selenium.webdriver.chrome.service import Service
++from selenium.webdriver.chrome.service import Service as ChromeService
+ from webdriver_manager.chrome import ChromeDriverManager
+-from webdriver_manager.utils import ChromeType
+-from selenium import webdriver
+-
+ 
+ @pytest.fixture()
+ def setup(request):
+-    chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
++    chrome_service = ChromeService(ChromeDriverManager().install())
+ 
+-    chrome_options = Options()
++    chrome_options = webdriver.ChromeOptions()
+     options = [
+     "--headless",
+     "--disable-gpu",
+```
+* ( 2023-12-29 17:07 )
+* 2nd test run
+```bash
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ pytest -rA
+====================================================================================== test session starts ======================================================================================
+platform linux -- Python 3.10.13, pytest-7.4.3, pluggy-1.3.0
+rootdir: /workspaces/pytest-selenium-ci
+plugins: anyio-4.1.0
+collected 2 items                                                                                                                                                                               
+
+test_web01.py EE                                                                                                                                                                          [100%]
+
+============================================================================================ ERRORS =============================================================================================
+__________________________________________________________________________ ERROR at setup of TestExampleOne.test_title __________________________________________________________________________
+
+request = <SubRequest 'setup' for <Function test_title>>
+
+    @pytest.fixture()
+    def setup(request):
+>       chrome_service = ChromeService(ChromeDriverManager().install())
+
+conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/chrome.py:40: in install
+    driver_path = self._get_driver_binary_path(self.driver)
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/core/manager.py:40: in _get_driver_binary_path
+    file = self._download_manager.download_file(driver.get_driver_download_url(os_type))
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/drivers/chrome.py:32: in get_driver_download_url
+    driver_version_to_download = self.get_driver_version_to_download()
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/core/driver.py:48: in get_driver_version_to_download
+    return self.get_latest_release_version()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <webdriver_manager.drivers.chrome.ChromeDriver object at 0x7f53c2fb1cf0>
+
+    def get_latest_release_version(self):
+        determined_browser_version = self.get_browser_version_from_os()
+        log(f"Get LATEST {self._name} version for {self._browser_type}")
+        if determined_browser_version is not None and version.parse(determined_browser_version) >= version.parse("115"):
+            url = "https://googlechromelabs.github.io/chrome-for-testing/latest-patch-versions-per-build.json"
+            response = self._http_client.get(url)
+            response_dict = json.loads(response.text)
+            determined_browser_version = response_dict.get("builds").get(determined_browser_version).get("version")
+            return determined_browser_version
+        # Remove the build version (the last segment) from determined_browser_version for version < 113
+>       determined_browser_version = ".".join(determined_browser_version.split(".")[:3])
+E       AttributeError: 'NoneType' object has no attribute 'split'
+
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/drivers/chrome.py:64: AttributeError
+------------------------------------------------------------------------------------- Captured stderr setup -------------------------------------------------------------------------------------
+/bin/sh: 1: google-chrome: not found
+/bin/sh: 1: google-chrome-stable: not found
+/bin/sh: 1: google-chrome-beta: not found
+/bin/sh: 1: google-chrome-dev: not found
+/bin/sh: 1: google-chrome: not found
+/bin/sh: 1: google-chrome-stable: not found
+/bin/sh: 1: google-chrome-beta: not found
+/bin/sh: 1: google-chrome-dev: not found
+_______________________________________________________________________ ERROR at setup of TestExampleOne.test_title_blog ________________________________________________________________________
+
+request = <SubRequest 'setup' for <Function test_title_blog>>
+
+    @pytest.fixture()
+    def setup(request):
+>       chrome_service = ChromeService(ChromeDriverManager().install())
+
+conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/chrome.py:40: in install
+    driver_path = self._get_driver_binary_path(self.driver)
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/core/manager.py:40: in _get_driver_binary_path
+    file = self._download_manager.download_file(driver.get_driver_download_url(os_type))
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/drivers/chrome.py:32: in get_driver_download_url
+    driver_version_to_download = self.get_driver_version_to_download()
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/core/driver.py:48: in get_driver_version_to_download
+    return self.get_latest_release_version()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <webdriver_manager.drivers.chrome.ChromeDriver object at 0x7f53c2fb1bd0>
+
+    def get_latest_release_version(self):
+        determined_browser_version = self.get_browser_version_from_os()
+        log(f"Get LATEST {self._name} version for {self._browser_type}")
+        if determined_browser_version is not None and version.parse(determined_browser_version) >= version.parse("115"):
+            url = "https://googlechromelabs.github.io/chrome-for-testing/latest-patch-versions-per-build.json"
+            response = self._http_client.get(url)
+            response_dict = json.loads(response.text)
+            determined_browser_version = response_dict.get("builds").get(determined_browser_version).get("version")
+            return determined_browser_version
+        # Remove the build version (the last segment) from determined_browser_version for version < 113
+>       determined_browser_version = ".".join(determined_browser_version.split(".")[:3])
+E       AttributeError: 'NoneType' object has no attribute 'split'
+
+/usr/local/python/3.10.13/lib/python3.10/site-packages/webdriver_manager/drivers/chrome.py:64: AttributeError
+------------------------------------------------------------------------------------- Captured stderr setup -------------------------------------------------------------------------------------
+/bin/sh: 1: google-chrome: not found
+/bin/sh: 1: google-chrome-stable: not found
+/bin/sh: 1: google-chrome-beta: not found
+/bin/sh: 1: google-chrome-dev: not found
+/bin/sh: 1: google-chrome: not found
+/bin/sh: 1: google-chrome-stable: not found
+/bin/sh: 1: google-chrome-beta: not found
+/bin/sh: 1: google-chrome-dev: not found
+==================================================================================== short test summary info ====================================================================================
+ERROR test_web01.py::TestExampleOne::test_title - AttributeError: 'NoneType' object has no attribute 'split'
+ERROR test_web01.py::TestExampleOne::test_title_blog - AttributeError: 'NoneType' object has no attribute 'split'
+======================================================================================= 2 errors in 0.24s =======================================================================================
+```
+* ( 2023-12-29 17:08 )
+* it means that I should modify the selenium webdriver for `chromium-browser`
