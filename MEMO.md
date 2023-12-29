@@ -319,5 +319,6 @@ E   ModuleNotFoundError: No module named 'webdriver_manager.utils'
 * Let's add source code as 1st draft commit
 ```bash
 @jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git add .github/ conftest.py test_web01.py pyproject.toml MEMO.md 
-
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git commit -m "draft commit"
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git push
 ```
