@@ -1,8 +1,6 @@
 [TOC]
 
-# 2023-12-29
-
-## Goal: create a lab for running Selenium with PyTest using Github Actions and Gitlab CI
+# Goal: create a lab for running Selenium with PyTest using Github Actions and Gitlab CI
 
 - ( 2023-12-29 15:45 )
 - Learn new skills:
@@ -14,7 +12,9 @@
     - Poetry
         - https://python-poetry.org/
 
-## Sub-Goal: Github Action
+# Sub-Goal #1: Github Action
+
+## 2023-12-29
 
 * ( 2023-12-29 15:42 )
 * Reference: 
@@ -564,3 +564,5 @@ index 554cb48..64eea8a 100644
 * go to https://github.com/jazzwang/pytest-selenium-ci/actions/workflows/test01.yaml
 * click `Run workflow` button
 * Result: https://github.com/jazzwang/pytest-selenium-ci/actions/runs/7364967006/job/20045814999
+
+![github-action](https://i.imgur.com/aoFiOQq.jpg)
