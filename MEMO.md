@@ -560,3 +560,7 @@ index 554cb48..64eea8a 100644
          run: pip install requests webdriver-manager selenium pytest
        - name: Run the PytTest script
 ```
+* ( 2023-12-30 15:45:07 )
+* go to https://github.com/jazzwang/pytest-selenium-ci/actions/workflows/test01.yaml
+* click `Run workflow` button
+* Result: https://github.com/jazzwang/pytest-selenium-ci/actions/runs/7364967006/job/20045814999
