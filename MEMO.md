@@ -525,3 +525,38 @@ PASSED test_web01.py::TestExampleOne::test_title
 PASSED test_web01.py::TestExampleOne::test_title_blog
 ================================================================= 2 passed in 12.70s ==================================================================
 ```
+* ( 2023-12-30 15:36:14 )
+* testing Github Action
+* reference https://github.com/MarketingPipeline/Python-Selenium-Action/blob/main/.github/workflows/Selenium-Action_Template.yaml
+* modify `.github/workflows/test01.yaml `
+```bash
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ code .github/workflows/test01.yaml 
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git diff .github/workflows/test01.yaml 
+diff --git a/.github/workflows/test01.yaml b/.github/workflows/test01.yaml
+index 554cb48..64eea8a 100644
+--- a/.github/workflows/test01.yaml
++++ b/.github/workflows/test01.yaml
+@@ -7,14 +7,18 @@ jobs:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Check out this repo
+-        uses: actions/checkout@v2
++        uses: actions/checkout@v3
+      #Setup Python   
+       - name: Set up Python
+-        uses: actions/setup-python@v2
++        uses: actions/setup-python@v4
+         with:
+           python-version: '3.10'
+-      - name: Install software
+-        run: sudo apt-get install -y chromium-browser
++      - name: Install GPG Key
++        run: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
++      - name: Add source.list
++        run: echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
++      - name: Install Google Chrome Stable
++        run: sudo apt-get -y update; sudo apt-get -y install google-chrome-stable
+       - name: Install the necessary packages
+         run: pip install requests webdriver-manager selenium pytest
+       - name: Run the PytTest script
+```

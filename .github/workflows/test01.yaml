@@ -7,14 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
      #Setup Python   
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Install software
-        run: sudo apt-get install -y chromium-browser
+      - name: Install GPG Key
+        run: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+      - name: Add source.list
+        run: echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+      - name: Install Google Chrome Stable
+        run: sudo apt-get -y update; sudo apt-get -y install google-chrome-stable
       - name: Install the necessary packages
         run: pip install requests webdriver-manager selenium pytest
       - name: Run the PytTest script
