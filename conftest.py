@@ -1,13 +1,12 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromiumService
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.os_manager import ChromeType
 
 @pytest.fixture()
 def setup(request):
-    chrome_service = ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+    chrome_service = ChromeService(ChromeDriverManager().install())
 
     chrome_options = webdriver.ChromeOptions()
     options = [

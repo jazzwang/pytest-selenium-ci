@@ -462,3 +462,66 @@ ERROR test_web01.py::TestExampleOne::test_title_blog - AttributeError: 'NoneType
 ```
 * ( 2023-12-29 17:08 )
 * it means that I should modify the selenium webdriver for `chromium-browser`
+
+## 2023-12-30
+
+* ( 2023-12-30 15:19:11 )
+* remove chromium-browser
+```
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ sudo apt-get remove --purge chromium-browser
+```
+* ( 2023-12-30 15:26:50 )
+* install google-chrome-stable
+```
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ pushd .
+/workspaces/pytest-selenium-ci /workspaces/pytest-selenium-ci
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ cd /tmp/
+@jazzwang ➜ /tmp $ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+@jazzwang ➜ /tmp $ echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+@jazzwang ➜ /tmp $ sudo apt-get update 
+@jazzwang ➜ /tmp $ sudo apt-get install google-chrome-stable
+@jazzwang ➜ /tmp $ popd 
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ code conftest.py 
+```
+* ( 2023-12-30 15:32:46 )
+```
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ git diff conftest.py
+diff --git a/conftest.py b/conftest.py
+index eed681b..40c1368 100644
+--- a/conftest.py
++++ b/conftest.py
+@@ -1,13 +1,12 @@
+ import pytest
+ from selenium import webdriver
+ from selenium.webdriver.chrome.options import Options
+-from selenium.webdriver.chrome.service import Service as ChromiumService
++from selenium.webdriver.chrome.service import Service as ChromeService
+ from webdriver_manager.chrome import ChromeDriverManager
+-from webdriver_manager.core.os_manager import ChromeType
+ 
+ @pytest.fixture()
+ def setup(request):
+-    chrome_service = ChromiumService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
++    chrome_service = ChromeService(ChromeDriverManager().install())
+ 
+     chrome_options = webdriver.ChromeOptions()
+     options = [
+
+@jazzwang ➜ /workspaces/pytest-selenium-ci (main) $ pytest -rA
+================================================================= test session starts =================================================================
+platform linux -- Python 3.10.13, pytest-7.4.3, pluggy-1.3.0
+rootdir: /workspaces/pytest-selenium-ci
+plugins: anyio-4.1.0
+collected 2 items                                                                                                                                     
+
+test_web01.py ..                                                                                                                                [100%]
+
+======================================================================= PASSES ========================================================================
+___________________________________________________________ TestExampleOne.test_title_blog ____________________________________________________________
+---------------------------------------------------------------- Captured stdout call -----------------------------------------------------------------
+Blog - Delrayo Tech
+=============================================================== short test summary info ===============================================================
+PASSED test_web01.py::TestExampleOne::test_title
+PASSED test_web01.py::TestExampleOne::test_title_blog
+================================================================= 2 passed in 12.70s ==================================================================
+```
